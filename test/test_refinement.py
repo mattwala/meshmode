@@ -31,7 +31,7 @@ from pyopencl.tools import (  # noqa
         pytest_generate_tests_for_pyopencl
         as pytest_generate_tests)
 from meshmode.mesh.generation import (  # noqa
-        generate_icosahedron, generate_box_mesh)
+        generate_icosahedron, generate_box_mesh, make_curve_mesh, ellipse)
 from meshmode.mesh.refinement.utils import check_nodal_adj_against_geometry
 from meshmode.mesh.refinement import Refiner
 
@@ -79,6 +79,15 @@ def uniform_refine_flags(mesh):
     #     partial(generate_icosahedron, 1, order=1),
     #     partial(random_refine_flags, 0.4),
     #     3),
+
+    ("3_to_1_ellipse_unif",
+        partial(
+            make_curve_mesh,
+            partial(ellipse, 3),
+            np.linspace(0, 1, 20),
+            order=2),
+        uniform_refine_flags,
+        4),
 
     ("rect2d_rand",
         partial(generate_box_mesh, (
